@@ -1,0 +1,36 @@
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: mongo
+    restart: no
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: nawy
+      MONGO_INITDB_ROOT_PASSWORD: nawypassword
+      MONGO_INITDB_DATABASE: core
+
+  app:
+    build:
+      context: .
+    container_name: app
+    restart: "on-failure"
+    ports:
+      - "2525:7007"
+    environment:
+      MONGO_URI: mongodb://nawy:nawypassword@mongo:27017/core?authSource=admin
+      PORT: 7007
+    depends_on:
+      - mongodb
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dockerFile
+    container_name: frontend  
+    ports:
+      - "8080:3000"
+    environment:
+      NEXT_PUBLIC_BACKEND_URL: http://app:7007/
+    depends_on:
+      - app

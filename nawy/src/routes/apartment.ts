@@ -40,7 +40,7 @@ const apartmentRouter = createRouter({
       body: z.object({
         name: z.string(),
         location: z.nativeEnum(Locations),
-        price: z.number()
+        price: z.number().positive('Price must be more than 0')
       }),
       handler: async({body})=> {
         return createApartment(body)
@@ -53,7 +53,7 @@ const apartmentRouter = createRouter({
         id: zodObjectId()
       }),
       body: z.object({
-        price: z.number().optional(),
+        price: z.number().positive('Price must be greater than 0.').optional(),
         location: z.nativeEnum(Locations).optional()
       }),
       handler: async({params, body})=> {
@@ -65,8 +65,8 @@ const apartmentRouter = createRouter({
       path: '/filter',
       body: z.object({
         name: z.string().optional(),
-        maxPrice: z.number().optional(),
-        minPrice: z.number().optional(),
+        maxPrice: z.number().positive('Price must be greater than 0.').max(10000).optional(),
+        minPrice: z.number().positive('Price must be greater than 0.').optional(),
         location: z.nativeEnum(Locations).optional(),
       }),
       handler: async ({ body }) => {

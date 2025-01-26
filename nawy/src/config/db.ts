@@ -25,7 +25,6 @@ export async function connect() {
     corePapr.initialize(client.db('core'));
     contentPapr.initialize(client.db('content'));
 
-    console.log('Successfully connected to MongoDB.');
   } catch (err) {
     console.error('Failed to connect to MongoDB:', err);
     process.exit(1);

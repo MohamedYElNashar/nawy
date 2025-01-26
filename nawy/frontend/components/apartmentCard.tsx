@@ -21,7 +21,6 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({ apartment, onDelete }) =>
   const [selectedLocation, setSelectedLocation] = useState<string>(apartment.location); // To manage the selected location
 
   useEffect(() => {
-    // Fetch the available locations
     const fetchLocations = async () => {
       try {
         const response = await api.get('/apartment/locations');
@@ -53,7 +52,6 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({ apartment, onDelete }) =>
       setApartmentDetails(null); // Hide details after deletion
       setIsDetailsVisible(false); // Hide details section
       onDelete(apartment._id); // Call the parent callback to remove the card from the list
-      console.log('Apartment deleted');
     } catch (error) {
       console.error('Error deleting apartment:', error);
     }
@@ -77,7 +75,7 @@ const ApartmentCard: React.FC<ApartmentCardProps> = ({ apartment, onDelete }) =>
 
   const handleIncreasePrice = async () => {
     try {
-      const newPrice = apartmentDetails ? apartmentDetails.price + 1000 : 0; // Increase price by 1000
+      const newPrice = apartmentDetails ? apartmentDetails.price + 1000 : 0; 
       const response = await api.patch(`/apartment/${apartment._id}`, { price: newPrice });
       setApartmentDetails((prevDetails) => {
         if (prevDetails) {
